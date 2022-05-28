@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[73]:
-
-
+# Imports
 import nltk
 from nltk import word_tokenize
 from nltk.util import ngrams
@@ -12,16 +7,12 @@ from collections import defaultdict
 import random
 
 
-# In[74]:
-
-
+# Creating model and opening file
 model = defaultdict(lambda: defaultdict(lambda: 0))
 file = open("EAPStories.txt", 'r')
 
 
-# In[75]:
-
-
+# Creating and cleaning up model
 for line in file:
     for w1, w2, w3 in trigrams(line.lower().split(), pad_right=True, pad_left=True):
         model[(w1, w2)][w3] += 1
@@ -34,13 +25,10 @@ for w1w2 in model:
     for w3 in model[w1w2]:
         model[w1w2][w3] = model[w1w2][w3] / total_occurence
 
-
-dict(model['and', 'then'])
-
-
-# In[76]:
+# Will print model => dict(model['and', 'then'])
 
 
+# Will create a sentence with the model
 def create_sentence(word1, word2):
     sentence = [word1, word2]
     sentence_complete = False
@@ -67,14 +55,12 @@ def create_sentence(word1, word2):
         if word != None:
             sentence_str = sentence_str + word + " "
     
-    print("create_sentence:", sentence_str)
+    #print("create_sentence:", sentence_str)
     
     return sentence
 
 
-# In[77]:
-
-
+# Will check how many syllables there are in a word
 def syllable_checker(word):
     num_syllables = 0
     for index in range(0, len(word)):
@@ -89,9 +75,7 @@ def syllable_checker(word):
     return num_syllables
 
 
-# In[78]:
-
-
+# Will build the sentence in a string format
 def build_sentence(sentence):
     sentence_str = ""
     for word in sentence:
@@ -99,23 +83,19 @@ def build_sentence(sentence):
     return sentence_str
 
 
-# In[79]:
-
-
+# Used for debugging syllable output
 def debug_print(syllables, sentence_str):
     syllable_debug = str(sum(syllables)) + " " + str(syllables)
-    print(f'{str(syllables):<18}', sum(syllables), "|", sentence_str)
+    #print(f'{str(syllables):<18}', sum(syllables), "|", sentence_str)
 
 
-# In[80]:
-
-
+# Creating the haiku
 haiku_created = False
 
 while not haiku_created:
     sentence = create_sentence("and", "how")
     sentence = sentence[0:len(sentence) - 2]
-    print("sentence:", sentence)
+    #print("sentence:", sentence)
 
     syllables = []
     index = 0
@@ -124,7 +104,7 @@ while not haiku_created:
         syllables.append(syllable_checker(word))
         index += 1
 
-    print("sylables:", syllables)
+    #print("sylables:", syllables)
     
     if sum(syllables) < 17:
         continue
@@ -136,7 +116,7 @@ while not haiku_created:
     index = 0
     num_syllables = 0
     for word in sentence:
-        print("sylable_num:", num_syllables)
+        #print("sylable_num:", num_syllables)
         if num_syllables >= 5:
             break
         elif num_syllables < 5:
@@ -179,7 +159,11 @@ while not haiku_created:
     second_syllables = syllables[len(first_sentence):len(first_sentence + second_sentence)]
     third_syllables = syllables[len(first_sentence + second_sentence):len(first_sentence + second_sentence + third_sentence)]
 
-    debug_print(first_syllables, first_sentence_str)
-    debug_print(second_syllables, second_sentence_str)
-    debug_print(third_syllables, third_sentence_str)
+    #debug_print(first_syllables, first_sentence_str)
+    #debug_print(second_syllables, second_sentence_str)
+    #debug_print(third_syllables, third_sentence_str)
+
+    print(first_sentence_str)
+    print(second_sentence_str)
+    print(third_sentence_str)
 
