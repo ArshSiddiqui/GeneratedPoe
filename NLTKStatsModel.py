@@ -5,6 +5,7 @@ from nltk.util import ngrams
 from nltk import trigrams
 from collections import defaultdict
 import random
+import sys
 
 
 # Creating model and opening file
@@ -77,11 +78,11 @@ def syllable_checker(word):
 
 # Used for debugging syllable output
 def debug_print(syllables, sentence):
-    print(f'{str(syllables):<18}', sum(syllables), "|", *sentence)
+    print(f'{str(syllables):<21}', sum(syllables), "|", *sentence)
 
 
 # Creating the haiku
-def create_haiku(first_word, second_word):
+def create_haiku(first_word, second_word, debug=False):
     haiku_created = False
 
     while not haiku_created:
@@ -145,18 +146,20 @@ def create_haiku(first_word, second_word):
         if num_syllables > 5:
             continue
 
-        #first_syllables = syllables[:len(first_sentence)]
-        #second_syllables = syllables[len(first_sentence):len(first_sentence + second_sentence)]
-        #third_syllables = syllables[len(first_sentence + second_sentence):len(first_sentence + second_sentence + third_sentence)]
+        if debug:
+            first_syllables = syllables[:len(first_sentence)]
+            second_syllables = syllables[len(first_sentence):len(first_sentence + second_sentence)]
+            third_syllables = syllables[len(first_sentence + second_sentence):len(first_sentence + second_sentence + third_sentence)]
 
-        #debug_print(first_syllables, first_sentence)
-        #debug_print(second_syllables, second_sentence)
-        #debug_print(third_syllables, third_sentence)
-
-        print(*first_sentence)
-        print(*second_sentence)
-        print(*third_sentence)
+            debug_print(first_syllables, first_sentence)
+            debug_print(second_syllables, second_sentence)
+            debug_print(third_syllables, third_sentence)
+        else:
+            print(*first_sentence)
+            print(*second_sentence)
+            print(*third_sentence)
 
 
 if __name__ == "__main__":
-    create_haiku('the', 'day')
+    first_word, second_word = sys.argv[1:3] # only allow 2 arguments
+    create_haiku(first_word, second_word)   # create_haiku(first_word, second_word, True) for debug print
